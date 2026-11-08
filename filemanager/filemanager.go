@@ -6,9 +6,13 @@ import (
 	"errors"
 	"os"
 )
+type FileManager struct{
+	Inputmanager string
+	Outputmanager string
+}
 
-func FileRead(filename string) ([]string, error) {
-	file, err := os.Open(filename)
+func (fm FileManager)FileRead() ([]string, error) {
+	file, err := os.Open(fm.Inputmanager)
 	if err != nil {
 		return nil, errors.New("failed to open file")
 	}
@@ -26,8 +30,8 @@ func FileRead(filename string) ([]string, error) {
 	return lines, err
 }
 
-func WriteJson(path string, data any) error {
-	file, err := os.Create(path)
+func (fm FileManager) WriteResult( data any) error {
+	file, err := os.Create(fm.Outputmanager)
 	if err != nil {
 		return errors.New("can't create a file")
 	}
@@ -39,4 +43,10 @@ func WriteJson(path string, data any) error {
 	}
 	file.Close()
 	return nil
+}
+func New(inputpath,outputpath string)FileManager{
+return FileManager{
+	Inputmanager: inputpath,
+	Outputmanager: outputpath,
+}
 }
